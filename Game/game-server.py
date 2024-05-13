@@ -88,6 +88,7 @@ class ClientThread(threading.Thread):
 
 
 def accept_connections(s):
+    print("Server started on ", HOST, ":", PORT)
     while True:
         conn, addr = s.accept()
 
