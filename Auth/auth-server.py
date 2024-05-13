@@ -1,3 +1,4 @@
+import bcrypt
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
@@ -47,12 +48,11 @@ def get_user(user_id):
     else:
         return jsonify({'message': 'User not found'}), 404
 
-
-#Example URL to create user : http://localhost:5000/users
 @app.route('/users', methods=['POST'])
 def create_user():
     data = request.get_json()
-    new_user = User(username=data['username'], password=data['password'], uuid=uuid.uuid4())
+    hashed_pass = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
+    new_user = User(username=data['username'], password=hashed_pass, uuid=uuid.uuid4())
     try:
         db.session.add(new_user)
         db.session.commit()
@@ -80,6 +80,30 @@ def delete_user(user_id):
         db.session.delete(user)
         db.session.commit()
         return jsonify({'message': 'User deleted successfully'})
+    else:
+        return jsonify({'message': 'User not found'}), 404
+
+@app.route('/users/auth', methods=['POST'])
+def get_user_uuid():
+    data = request.get_json()
+    if bcrypt.checkpw(data['password'].encode('utf-8'), User.query.filter_by(username=data['username']).first().hashed_pass.encode('utf-8')):
+        return jsonify({'uuid': User.query.filter_by(username=data['username']).first().uuid})
+    else:
+        return jsonify({'message': 'Invalid credentials'}), 401
+
+
+
+@app.route('/users/uuid/<uuid>', methods=['GET'])
+def get_user_by_uuid(uuid):
+    user = User.query.filter_by(uuid=uuid).first()
+    if user:
+        user_data = {
+            'id': user.id,
+            'username': user.username,
+            'password': user.hashed_pass,
+            'uuid': user.uuid,
+        }
+        return jsonify(user_data)
     else:
         return jsonify({'message': 'User not found'}), 404
 
