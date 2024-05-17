@@ -8,20 +8,23 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://api:Passw0rd@postgres:5432/postgres"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+salt = bcrypt.gensalt()
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     hashed_pass = db.Column(db.String(120), nullable=False)
     uuid = db.Column(db.String(120), nullable=False)
+
     def __init__(self, username, password, uuid):
         self.username = username
         self.hashed_pass = password
         self.uuid = uuid
 
+
 @app.route('/users', methods=['GET'])
 def get_users():
-    print("----------------------------Test----------------------------------")
     users = User.query.all()
     result = []
     for user in users:
@@ -33,6 +36,7 @@ def get_users():
         }
         result.append(user_data)
     return jsonify(result)
+
 
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
@@ -48,11 +52,12 @@ def get_user(user_id):
     else:
         return jsonify({'message': 'User not found'}), 404
 
+
 @app.route('/users', methods=['POST'])
 def create_user():
     data = request.get_json()
-    hashed_pass = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
-    new_user = User(username=data['username'], password=hashed_pass, uuid=uuid.uuid4())
+    hashed_pass = bcrypt.hashpw(data['password'].encode('utf8'), bcrypt.gensalt())
+    new_user = User(username=data['username'], password=hashed_pass.decode('utf8'), uuid=uuid.uuid4())
     try:
         db.session.add(new_user)
         db.session.commit()
@@ -60,6 +65,7 @@ def create_user():
     except IntegrityError:
         db.session.rollback()
         return jsonify({'message': 'Username already exists'}), 400
+
 
 @app.route('/users/<int:user_id>', methods=['PUT'])
 def update_user(user_id):
@@ -73,6 +79,7 @@ def update_user(user_id):
     else:
         return jsonify({'message': 'User not found'}), 404
 
+
 @app.route('/users/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id):
     user = User.query.get(user_id)
@@ -83,14 +90,17 @@ def delete_user(user_id):
     else:
         return jsonify({'message': 'User not found'}), 404
 
+
 @app.route('/users/auth', methods=['POST'])
 def get_user_uuid():
+    hashed_password = User.query.filter_by(username=request.get_json()['username']).first().hashed_pass
     data = request.get_json()
-    if bcrypt.checkpw(data['password'].encode('utf-8'), User.query.filter_by(username=data['username']).first().hashed_pass.encode('utf-8')):
+    if bcrypt.checkpw(data['password'].encode('utf-8'), hashed_password.encode('utf-8')):
+        print("UUID : ", User.query.filter_by(username=data['username']).first().uuid)
         return jsonify({'uuid': User.query.filter_by(username=data['username']).first().uuid})
+
     else:
         return jsonify({'message': 'Invalid credentials'}), 401
-
 
 
 @app.route('/users/uuid/<uuid>', methods=['GET'])
