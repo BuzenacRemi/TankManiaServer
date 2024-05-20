@@ -15,14 +15,17 @@ class MatchmakingThread(threading.Thread):
     def run(self):
         while self.is_alive:
             if len(self.queue) >= 2:
-                player1: ClientThread.ClientThread = self.queue.pop(0)
-                player2: ClientThread.ClientThread = self.queue.pop(0)
-                print("Match found")
-                if player1.state == State.QUEUE:
+                tmpP1: ClientThread.ClientThread = self.queue[0]
+                tmpP2: ClientThread.ClientThread = self.queue[1]
+                if tmpP1.state == State.QUEUE and tmpP2.state == State.QUEUE:
+                    player1: ClientThread.ClientThread = self.queue.pop(0)
+                    player2: ClientThread.ClientThread = self.queue.pop(0)
+                    player1.state = State.PLAY
+                    player2.state = State.PLAY
                     Game.GameThread.GameThread(player1, player2).start()
-                else :
-                    print("One of the player is not ready")
-            time.sleep(1)
+                time.sleep(1)
 
     def add_to_queue(self, player: ClientThread):
         self.queue.append(player)
+
+#Ceci est un commentaire pour push bordel

@@ -62,7 +62,7 @@ class ClientThread(threading.Thread):
                             case 0:
                                 pass
                                 #print("Play : Received Player Position And Look")
-                                print("Position : ", packet.get_packet_data())
+                                print("Position : ", )
                             case 1:
                                 pass
                                 #print("Play : Received Canon Look")
