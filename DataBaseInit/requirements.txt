@@ -1,0 +1,2 @@
+psycopg2==2.9.9
+sqlalchemy_utils==0.37.8
