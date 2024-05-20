@@ -91,7 +91,7 @@ def delete_user(user_id):
         return jsonify({'message': 'User not found'}), 404
 
 
-@app.route('/users/auth', methods=['POST'])
+'''@app.route('/users/auth', methods=['POST'])
 def get_user_uuid():
     hashed_password = User.query.filter_by(username=request.get_json()['username']).first().hashed_pass
     data = request.get_json()
@@ -101,6 +101,12 @@ def get_user_uuid():
 
     else:
         return jsonify({'message': 'Invalid credentials'}), 401
+
+'''
+
+@app.route('/users/auth', methods=['POST'])
+def test_random_uuid():
+    return jsonify({'uuid': uuid.uuid4()})
 
 
 @app.route('/users/uuid/<uuid>', methods=['GET'])

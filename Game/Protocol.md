@@ -1,4 +1,6 @@
 # Protocol
+## States
+Handshaking, Configuration, Queue, Play
 
 ### Handshake
 #### Handshake
@@ -32,8 +34,26 @@
 |:---------:|:-----:|:----------:|:----------:|:----:|
 |   0x01    | Play |  Yaw  |  Float  |      |
 
+#### Bullet Spawn
+| Packet ID | State | Field Name | Field Type | Note |
+|:---------:|:-----:|:----------:|:----------:|:----:|
+|   0x02    | Play |            |            |      |
 
+#### Bullet Position
+| Packet ID | State | Field Name | Field Type | Note |
+|:---------:|:-----:|:----------:|:----------:|:----:|
+|   0x03    | Play |  X  |  Double  |      |
+|           | Play |  Y  |  Double  |      |
 
+#### Bullet Destroy
+| Packet ID | State | Field Name | Field Type | Note |
+|:---------:|:-----:|:----------:|:----------:|:----:|
+|   0x04    | Play |            |            |      |
+
+#### Bullet Hit
+| Packet ID | State | Field Name | Field Type | Note |
+|:---------:|:-----:|:----------:|:----------:|:----:|
+|   0x05    | Play |            |            |      |
 
 
 
