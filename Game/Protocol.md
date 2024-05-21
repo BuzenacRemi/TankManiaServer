@@ -24,36 +24,40 @@ Handshaking, Configuration, Queue, Play
 ### Play
 #### Player Position And Look
 | Packet ID | State | Field Name | Field Type | Note |
+|:---------:|:-----:|:---------:|:----------:|:----:|
+|   0x00    | Play  |     X     |   Double   |      |
+|           | Play  |     Y     |   Double   |      |
+
+#### Player Look
+| Packet ID | State | Field Name | Field Type | Note |
 |:---------:|:-----:|:----------:|:----------:|:----:|
-|   0x00    | Play |  X  |  Double  |      |
-|           | Play |  Y  |  Double  |      |
-|           | Play |  Yaw  |  Float  |      |
+|   0x01    | Play |    Yaw     |  Float  |      |
 
 #### Canon Look
 | Packet ID | State | Field Name | Field Type | Note |
 |:---------:|:-----:|:----------:|:----------:|:----:|
-|   0x01    | Play |  Yaw  |  Float  |      |
+|   0x02    | Play |  Yaw  |  Float  |      |
 
 #### Bullet Spawn
 | Packet ID | State | Field Name | Field Type | Note |
 |:---------:|:-----:|:----------:|:----------:|:----:|
-|   0x02    | Play |            |            |      |
+|   0x03    | Play |            |            |      |
 
 #### Bullet Position
 | Packet ID | State | Field Name | Field Type | Note |
 |:---------:|:-----:|:----------:|:----------:|:----:|
-|   0x03    | Play |  X  |  Double  |      |
+|   0x04    | Play |  X  |  Double  |      |
 |           | Play |  Y  |  Double  |      |
 
 #### Bullet Destroy
 | Packet ID | State | Field Name | Field Type | Note |
 |:---------:|:-----:|:----------:|:----------:|:----:|
-|   0x04    | Play |            |            |      |
+|   0x05    | Play |            |            |      |
 
 #### Bullet Hit
 | Packet ID | State | Field Name | Field Type | Note |
 |:---------:|:-----:|:----------:|:----------:|:----:|
-|   0x05    | Play |            |            |      |
+|   0x06    | Play |            |            |      |
 
 
 

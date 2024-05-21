@@ -27,5 +27,3 @@ class MatchmakingThread(threading.Thread):
 
     def add_to_queue(self, player: ClientThread):
         self.queue.append(player)
-
-#Ceci est un commentaire pour push bordel
