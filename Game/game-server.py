@@ -22,6 +22,7 @@ def accept_connections(s):
             time.sleep(0.1)
 
         matchmaking_thread.add_to_queue(client_thread)
+
         matchmaking_thread.update_rank(client_thread.uuid)
 
 

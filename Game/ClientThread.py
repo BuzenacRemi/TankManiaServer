@@ -55,7 +55,8 @@ class ClientThread(threading.Thread):
                         match packet.get_packet_id():
                             case 0:
                                 #handle_queue_request(self.conn)
-                                print("Queue : Received", data)
+                                #print("Queue : Received", data)
+                                pass
                             case 153:
                                 self.is_alive = True
                     case State.PLAY:

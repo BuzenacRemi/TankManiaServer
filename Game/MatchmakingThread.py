@@ -39,6 +39,7 @@ class MatchmakingThread(threading.Thread):
         clean_uuid = clean_uuid.split("\\")[0]
         clean_uuid = clean_uuid.replace("'", "").strip()
         return clean_uuid
+        print("Not cleaned:",uuid)
 
     def get_rank_by_uuid(self, uuid):
         try:
@@ -102,10 +103,10 @@ class MatchmakingThread(threading.Thread):
         uuid = self.clean_uuid(uuid)
 
         # Vérifier si l'utilisateur existe dans la table user via l'API
-        user_exists = self.check_user_exists_api(uuid)
-
+        '''user_exists = self.check_user_exists_api(uuid)
+        print("User exist : ", user_exists)
         if not user_exists:
-            raise ValueError("User does not exist")
+            raise ValueError("User does not exist")'''
 
         # Vérifier si l'utilisateur a une entrée dans la table rank via l'API
         user_rank = self.get_rank_by_uuid_api(uuid)
@@ -135,6 +136,7 @@ class MatchmakingThread(threading.Thread):
             'value': value
         }
         response = requests.post("http://localhost:5000/rank", json=payload)
+        print(response)
         if response.status_code == 200:
             print(f"New rank entry created for user {uuid} with value {value}")
         else:

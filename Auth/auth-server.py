@@ -126,6 +126,7 @@ def get_user_by_uuid(user_uuid):
 def create_rank():
     data = request.get_json()
     new_rank = Rank(uuid_player=data['uuid_player'], value=data['value'])
+    print(new_rank)
     db.session.add(new_rank)
     db.session.commit()
     return jsonify({'message': 'Rank created successfully'})
