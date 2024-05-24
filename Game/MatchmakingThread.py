@@ -25,6 +25,7 @@ class MatchmakingThread(threading.Thread):
                     Game.GameThread.GameThread(player1, player2).start()
                 time.sleep(1)
 
+
     def add_to_queue(self, player: ClientThread.ClientThread):
         print(f"Adding player {player.uuid} to queue")
         player.uuid = self.clean_uuid(player.uuid)
@@ -138,3 +139,5 @@ class MatchmakingThread(threading.Thread):
             print(f"New rank entry created for user {uuid} with value {value}")
         else:
             raise Exception(f"Failed to create rank entry for user {uuid}: {response.text}")
+    def add_to_queue(self, player: ClientThread):
+        self.queue.append(player)

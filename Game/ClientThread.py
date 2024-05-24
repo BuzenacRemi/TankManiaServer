@@ -12,7 +12,7 @@ class State(Enum):
     QUEUE = 2
     PLAY = 3
 
-class ClientThread(threading.Thread):
+class ClientThread(threading.Thread): 
     def __init__(self, conn, addr):
         super().__init__()
         self.conn = conn
@@ -20,8 +20,7 @@ class ClientThread(threading.Thread):
         self.state = State.HANDSHAKE
         self.uuid = None
         self.is_alive = True
-        self.pos_x = 0
-        self.pos_y = 0
+        self.pos = bytes
         self.rotation = 0
         self.canon_rotation = 0
 
@@ -43,6 +42,7 @@ class ClientThread(threading.Thread):
                         print("Handshake successful")
                     case State.CONFIG:
                         self.uuid = str(config.handle_config_request(self.conn, packet.get_packet_data()))
+
                         print ("UUID : ", self.uuid)
                         threading.current_thread().name = self.uuid
                         self.state = State.QUEUE
@@ -63,7 +63,8 @@ class ClientThread(threading.Thread):
                             case 0:
                                 pass
                                 #print("Play : Received Player Position And Look")
-                                print("Position : ", )
+                                #print("Position : ", packet.get_packet_data())
+                                self.pos = packet.get_packet_data()
                             case 1:
                                 pass
                                 #print("Play : Received Canon Look")

@@ -16,7 +16,22 @@ class GameThread(threading.Thread):
         super().__init__()
         self.player1 = player1
         self.player2 = player2
+        self.pos_player1 = bytes
+        self.pos_player2 = bytes
 
     def run(self):
         while 1:
-            pass
+            if self.pos_player1 != self.player1.pos:
+                print("player1 moved")
+                self.pos_player1 = self.player1.pos
+                packet_content = b'0'
+                for byte in self.pos_player1:
+                    packet_content += bytes([byte])
+                self.player2.conn.sendall(packet_content)
+            if self.pos_player2 != self.player2.pos:
+                print("player2 moved")
+                self.pos_player2 = self.player2.pos
+                packet_content = b'0'
+                for byte in self.pos_player2:
+                    packet_content += bytes([byte])
+                self.player1.conn.sendall(packet_content)
