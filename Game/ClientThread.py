@@ -1,6 +1,6 @@
 import threading
 from enum import Enum
-
+import requests
 from Game.protocol import handshake, config, queue
 from Game.protocol.packet import Packet
 from Game.protocol.queue import send_queue_position
@@ -43,6 +43,7 @@ class ClientThread(threading.Thread):
                         print("Handshake successful")
                     case State.CONFIG:
                         self.uuid = str(config.handle_config_request(self.conn, packet.get_packet_data()))
+                        print ("UUID : ", self.uuid)
                         threading.current_thread().name = self.uuid
                         self.state = State.QUEUE
                         print("Configuration successful")

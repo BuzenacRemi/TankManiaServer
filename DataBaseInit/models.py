@@ -21,6 +21,7 @@ class User(Base):
     game_histories_winner = relationship("GameHistory", foreign_keys="[GameHistory.uuid_winner]")
     game_stats = relationship("GameStats", back_populates="user")
 
+
 class Rank(Base):
     __tablename__ = 'rank'
 
